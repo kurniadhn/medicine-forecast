@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Message;
 use App\Models\Forecast;
 use App\Models\Medicine;
 use Illuminate\Http\Request;
@@ -37,8 +38,19 @@ class MedicineController extends Controller
             'harga' => 'required|max:10',
             'tanggal_kadaluarsa' => 'required'
         ]);
+        
+        $medicine = Medicine::create($validatedData);
 
-        Medicine::create($validatedData);
+        $medicineName = $medicine->nama_obat;
+
+        $messageData['message'] = 'Telah menambahkan data obat';
+        $messageData['type'] = 'activity';
+        $messageData['page'] = 'medicine';
+        $messageData['user_id'] = Auth()->user()->id;
+        $messageData['updated_at'] = now();
+        $messageData['medicine_name'] = $medicineName;
+
+        Message::create($messageData);
 
         return redirect('/medicine')->with('success', 'Medicine has been added!');
     }
@@ -77,6 +89,15 @@ class MedicineController extends Controller
 
         Medicine::where('id', $medicine->id)->update($validatedData);
 
+        $messageData['message'] = 'Telah mengubah data obat';
+        $messageData['type'] = 'activity';
+        $messageData['page'] = 'medicine';
+        $messageData['user_id'] = Auth()->user()->id;
+        $messageData['updated_at'] = now();
+        $messageData['medicine_name'] = $request->nama_obat;
+
+        Message::create($messageData);
+
         return redirect('/medicine')->with('edit', 'Medicine has been updated');
     }
 
@@ -85,6 +106,18 @@ class MedicineController extends Controller
      */
     public function destroy(Medicine $medicine)
     {
+
+        $messageData['message'] = 'Telah menghapus data obat';
+        $messageData['type'] = 'activity';
+        $messageData['page'] = 'medicine';
+        $messageData['user_id'] = Auth()->user()->id;
+        $messageData['updated_at'] = now();
+        $messageData['medicine_name'] = $medicine->nama_obat;
+
+        // dd($messageData);
+
+        Message::create($messageData);
+
         Medicine::destroy($medicine->id);
 
         return redirect('/medicine')->with('delete', 'Medicine has been deleted');
@@ -93,7 +126,7 @@ class MedicineController extends Controller
     public function history()
     {
         return view('admin.medicine.riwayat', [
-            'forecasts' => Forecast::paginate(1000)
+            'forecasts' => Forecast::paginate(10)
         ]);
     }
 }

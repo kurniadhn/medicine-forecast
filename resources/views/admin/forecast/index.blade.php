@@ -22,9 +22,9 @@
                             <div class="card-body">
                                 <div class="form-group">
                                     <label>Nama Obat</label>
-                                    <input type="search" class="form-control" name="nama_obat" value="SUPERTETRA CAP"
-                                        autofocus readonly>
-
+                                    <select class="form-control">
+                                        <option>Option 1</option>
+                                    </select>
                                 </div>
                                 <div class="form-group">
                                     <label>Periode Forecasting</label>

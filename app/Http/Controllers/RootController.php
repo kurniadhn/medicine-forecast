@@ -10,9 +10,4 @@ class RootController extends Controller
     {
         return view('root.activities.index');
     }
-
-    public function changelog()
-    {
-        return view('root.changelog.index');
-    }
 }

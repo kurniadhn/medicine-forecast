@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RootController;
@@ -43,7 +44,7 @@ Route::post('/users/{user:id}', [AdminController::class, 'deactivated']);
 Route::get('/pending', [AdminController::class, 'pending'])->middleware('auth');
 Route::post('/pending/{user:id}', [AdminController::class, 'activated']);
 
-Route::get('/activities', [RootController::class, 'activities'])->middleware('auth');
+Route::get('/activities', [ActivityController::class, 'activities'])->middleware('auth');
 
 Route::get('/changelog', [MessageController::class, 'index'])->middleware('auth');
 

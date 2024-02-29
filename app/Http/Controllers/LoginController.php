@@ -25,13 +25,15 @@ class LoginController extends Controller
             if (Auth()->user()->status == 'activated') {
                 $request->session()->regenerate();
 
-                $messageData['message'] = 'telah berhasil login';
+                $messageData['message'] = 'Telah berhasil login';
                 $messageData['type'] = 'changelog';
                 $messageData['page'] = 'dashboard';
                 $messageData['user_id'] = Auth()->user()->id;
                 $messageData['updated_at'] = now();
 
-                Message::create($messageData);
+                if (Auth()->User()->is_admin == 0) {
+                    Message::create($messageData);
+                }
 
                 return redirect()->intended('dashboard');
             } elseif ((Auth()->user()->status == 'deactivated')) {
@@ -54,18 +56,31 @@ class LoginController extends Controller
     {
         $id = Auth()->user()->id;
 
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        $messageData['message'] = 'telah berhasil logout';
+        $messageData['message'] = 'Telah berhasil logout';
         $messageData['type'] = 'changelog';
         $messageData['page'] = 'dashboard';
         $messageData['user_id'] = $id;
         $messageData['updated_at'] = now();
 
-        Message::create($messageData);
+        if (Auth()->User()->is_admin == 0) {
+            Message::create($messageData);
+        }
+
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
 
         return redirect('/');
     }
 }
+
+    // public function logout(Request $request)
+    // {
+    //     Auth::logout();
+    //     $request->session()->invalidate();
+    //     $request->session()->regenerateToken();
+
+
+    //     return redirect('/login');
+    // }

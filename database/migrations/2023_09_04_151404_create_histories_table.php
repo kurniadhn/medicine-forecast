@@ -11,14 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('Messages', function (Blueprint $table) {
+        Schema::create('histories', function (Blueprint $table) {
             $table->id();
-            $table->string('message');
-            $table->string('type');
-            $table->string('page');
-            $table->string('medicine_name')->nullable();
-            $table->integer('forecast_id')->nullable();
-            $table->integer('user_id')->nullable();
+            $table->integer('tahun');
+            $table->integer('bulan');
+            $table->integer('medicine_id');
+            $table->integer('jumlah_keluar');
+            $table->integer('total');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('Messages');
+        Schema::dropIfExists('histories');
     }
 };

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\History;
 use App\Models\Forecast;
+use App\Models\Medicine;
 use Illuminate\Http\Request;
 
 class ForecastController extends Controller
@@ -12,13 +14,17 @@ class ForecastController extends Controller
      */
     public function index(Request $request)
     {
+        $obat = Medicine::all();
+        dd($obat);
+
         if ($request->has('nama_obat')) {
             $alpha = $request->alpha;
             $beta = $request->beta;
             $gamma = $request->gamma;
             $period = $request->period;
             $obat = $request->nama_obat;
-            $data = Forecast::where('nama_obat', $obat)->orderBy('tgl_jual', 'asc')->get();
+            $data = History::where('nama_obat', $obat)->orderBy('tgl_jual', 'asc')->get();
+            dd($data);
             if (!$data->count()) {
                 return view('admin.forecast.index');
             }
